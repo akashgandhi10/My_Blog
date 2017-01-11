@@ -8,7 +8,7 @@ from django.core.urlresolvers import reverse
 def upload_location(instance, filename):
     # filebase, extension = filename.split(".")
     # return "%s/%s.%s" %(instance.id, instance.id, extension)
-    return "%s/%s" %(instance.id, filename)
+    return "%s/%s" %(instance.slug, filename)
 
 class Post(models.Model):
     title = models.CharField(max_length = 120)
