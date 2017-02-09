@@ -60,17 +60,25 @@
     </p>
 
     <hr />
-
-    <p>
-        {{instance.content | linebreaks }}
-    </p>
-    <br />
-    <hr />
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="post-detail-item img">{{instance.get_markdown}}</div>
+        <br />
+        <hr />
+        <div class="">
+            <!-- {{instance.comment_set.all}} -->
+            <p class="lead">Comments</p>
+            {% for comment in comments %}
+                <hr />
+                {{comment.content}} <br />
+                <small>via {{comment.user}} | {{comment.timestamp|timesince}} ago</small>
+            {% endfor%}
+        <!-- </div>
     <div class="row">
         <div class="col-sm-12" "col-sm-offset-2">
             <div class="fb-comments" data-href={{request.build_absolute_uri}} data-numposts="5"></div>
+        </div> -->
         </div>
-    </div>
 
 
     <!-- {{request.build_absolute_uri}} -->

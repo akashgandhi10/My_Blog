@@ -26,6 +26,7 @@
         {% block style %}
         {% endblock style%}
     </style>
+    {% block head_extra %} {% endblock head_extra %}
   </head>
   <body>
     <div id="fb-root"></div>
@@ -37,7 +38,7 @@
     fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));</script>
       {% include "messages_display.html" %}
-      
+
       <div class="container">
           {% block content %}
 
@@ -45,8 +46,58 @@
       </div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"
+     integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+      crossorigin="anonymous">
+    </script>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> -->
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.6/marked.min.js"></script>
+    <script type="text/javaScript">
+        $(document).ready(function(){
+            $(".content-markdown").each(function(){
+                var content = $(this).text()
+                // console.log(content)
+                var markedContent = marked(content)
+                // console.log(markedContent)
+                $(this).html(markedContent)
+            })
+            $(".post-detail-item img").each(function(){
+                $(this).addClass("img-responsive");
+            })
+
+            var titleInput = $("#id_title");
+            // $("#preview-title").text(titleItem.val())
+
+            var contentInput = $("#id_content");
+            // $("#preview-content").html(marked(contentItem.val()))
+            // console.log(titleItem)
+
+            function setContent(value){
+                var markedContent = marked(value)
+                $("#preview-content").html(markedContent)
+                $("#preview-content img").each(function(){
+                    $(this).addClass("img-responsive")
+                })
+            }
+            setContent(contentInput.val())
+
+            contentInput.keyup(function(){
+                var newContent = $(this).val()
+                setContent(newContent)
+            })
+
+            function setTitle(value){
+                $("#preview-title").text(value)
+            }
+            setTitle(titleInput.val())
+
+            titleInput.keyup(function(){
+                var newTitle = $(this).val()
+                setTitle(newTitle)
+            })
+        })
+    </script>
   </body>
 </html>

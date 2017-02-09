@@ -7,12 +7,20 @@
             <h1>{{title}}</h1>
 
             <p>
-            <form class="" action="" method="GET">
-                <!-- <div class="form-group"> -->
-                    <input  type="text" name="q" value="{{request.GET.q}}" placeholder="Search post">
-                    <button type="submit" class="btn btn-primary">Search</button>
-                    <!-- <input butt type="submit" name="" value="Search"> -->
-                <!-- </div> -->
+            <form class="row" action="" method="GET">
+                <div class="col-sm-6">
+                    <div class="input-group">
+                    <!-- <div class="form-group"> -->
+                        <input class="form-control" type="text" name="q" value="{{request.GET.q}}" placeholder="Search post">
+                        <span class="input-group-btn">
+                            <button type="submit" class="btn btn-default">
+                                <i class="fa fa-search" aria-hidden="true"></i>
+                            </button>
+                        </span>
+                        <!-- <input butt type="submit" name="" value="Search"> -->
+                    <!-- </div> -->
+                    </div>
+                </div>
             </form>
             </p>
 
@@ -32,7 +40,7 @@
                     {% if obj.image %}
                         <img src="{{obj.image.url}}" alt="" class="img-responsive">
                     {% endif %}
-                  <div class="caption">
+                  <div class="caption post-detail-item img">
                      {% if obj.draft %}<h3>Staff Only: Draft</h3>{% endif %}
                      {% if obj.publish > today %}<h3>Staff Only: Future Post</h3>{% endif %}
                     <h3><a href="{{obj.get_absolute_url}}">{{obj.title}}</a><small> {{obj.publish | timesince}}</small></h3>
@@ -43,7 +51,7 @@
                             Author: {{obj.user}}
                         {% endif %}
                     </p>
-                    <p>{{obj.content | linebreaks | truncatechars:120}}</p>
+                    {{obj.get_markdown| truncatechars_html:50 }}
                     <p><a href="{{obj.get_absolute_url}}" class="btn btn-primary" role="button">View</a>
                   </div>
                 </div>
