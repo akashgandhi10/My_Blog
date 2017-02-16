@@ -6,6 +6,8 @@ from django.utils import timezone
 from django.core.urlresolvers import reverse
 from django.conf import settings
 from django.utils.safestring import mark_safe
+from comments.models import Comment
+from django.contrib.contenttypes.models import ContentType
 
 from markdown_deux import markdown
 
@@ -50,6 +52,18 @@ class Post(models.Model):
         content = self.content
         mark_text = markdown(content)
         return mark_safe(mark_text)
+
+    @property
+    def comments(self):
+        instance = self
+        qs =  Comment.objects.filter_by_instance(instance)
+        return qs
+
+    @property
+    def get_content_type(self):
+        instance = self
+        content_type = ContentType.objects.get_for_model(instance.__class__)
+        return content_type
 
 def create_slug(instance, new_slug=None):
     slug = slugify(instance.title)

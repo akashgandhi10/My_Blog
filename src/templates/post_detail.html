@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% load urlify %}
+{% load crispy_forms_tags %}
+{% load crispy_forms_field %}
 
 {% block head_title %}
     {{instance.title}} | {{block.super}}
@@ -65,13 +67,34 @@
             <div class="post-detail-item img">{{instance.get_markdown}}</div>
         <br />
         <hr />
+        <!-- {{instance.comments.all}} -->
         <div class="">
             <!-- {{instance.comment_set.all}} -->
             <p class="lead">Comments</p>
+            <form class="" action="." method="post"> {% csrf_token %}
+                {{comment_form |crispy}}
+                <input type="submit" name="" value="Post Comment" class="btn btn-default">
+
+            </form>
             {% for comment in comments %}
                 <hr />
-                {{comment.content}} <br />
-                <small>via {{comment.user}} | {{comment.timestamp|timesince}} ago</small>
+                <blockquote>
+                <p>{{comment.content}}</p>
+                <footer>via {{comment.user}} | {{comment.timestamp|timesince}} ago</footer>
+                    {% for comment_child in comment.children %}
+                    <blockquote>
+                    <p>{{comment_child.content}}</p>
+                    <footer>via {{comment_child.user}} | {{comment_child.timestamp|timesince}} ago</footer>
+                    </blockquote>
+                    {% endfor %}
+
+                    <form class="" action="." method="post"> {% csrf_token %}
+                        {{comment_form |crispy}}
+                        <input type="hidden" name="parent_id" value="{{comment.id}}">
+                        <input type="submit" name="" value="Reply" class="btn btn-default">
+                    </form>
+                </blockquote>
+                <hr />
             {% endfor%}
         <!-- </div>
     <div class="row">
