@@ -1,4 +1,11 @@
-from urllib import quote_plus
+try:
+    from urllib import quote_plus #python2
+except:
+    pass
+try:
+    from urllib.parse import quote_plus #python3
+except:
+    pass
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.contrib import messages

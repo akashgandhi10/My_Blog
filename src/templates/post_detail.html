@@ -7,13 +7,13 @@
     {{instance.title}} | {{block.super}}
 {% endblock head_title %}
 
-<style>
+<!-- /*<style>
     {% block style %}
         h1{
             color: #777777;
         }
     {% endblock style%}
-</style>
+</style>*/ -->
 
 {% block content %}
 <div class="col-sm-6 col-sm-offset-3">
@@ -76,23 +76,33 @@
                 <input type="submit" name="" value="Post Comment" class="btn btn-default">
 
             </form>
+            <hr />
             {% for comment in comments %}
-                <hr />
-                <blockquote>
-                <p>{{comment.content}}</p>
-                <footer>via {{comment.user}} | {{comment.timestamp|timesince}} ago</footer>
-                    {% for comment_child in comment.children %}
-                    <blockquote>
-                    <p>{{comment_child.content}}</p>
-                    <footer>via {{comment_child.user}} | {{comment_child.timestamp|timesince}} ago</footer>
-                    </blockquote>
-                    {% endfor %}
 
-                    <form class="" action="." method="post"> {% csrf_token %}
-                        {{comment_form |crispy}}
-                        <input type="hidden" name="parent_id" value="{{comment.id}}">
-                        <input type="submit" name="" value="Reply" class="btn btn-default">
-                    </form>
+                <blockquote>
+                    <p>{{comment.content}}</p>
+                    <footer>
+                        via {{comment.user}} | {{comment.timestamp|timesince}} ago |
+                        {% if comment.children.count > 0 %}
+                         {{comment.children.count}} Comment{%if comment.children.count > 1 %}s {% endif %}
+                        |{% endif %}
+                        <a class="comment-reply-btn" href="#">Reply</a> |
+                        <a href="{{comment.get_absolute_url}}">Thread</a>
+                    </footer>
+                    <div class="comment-reply" style="display:none;">
+                        {% for comment_child in comment.children %}
+                        <blockquote>
+                        <p>{{comment_child.content}}</p>
+                        <footer>via {{comment_child.user}} | {{comment_child.timestamp|timesince}} ago</footer>
+                        </blockquote>
+                        {% endfor %}
+
+                        <form class="" action="." method="post"> {% csrf_token %}
+                            {{comment_form |crispy}}
+                            <input type="hidden" name="parent_id" value="{{comment.id}}">
+                            <input type="submit" name="" value="Reply" class="btn btn-default">
+                        </form>
+                    </div>
                 </blockquote>
                 <hr />
             {% endfor%}
