@@ -24,6 +24,8 @@
         {{title}} <small>{% if instance.draft %}<span style="color:red">Draft </span>
             {% endif %}{{instance.publish}}</small>
     </h1>
+    <!-- <p>Read Time: {% if instance.read_time|time:"i" <= "01" %} < 1 minute {% elif instance.read_time|time:"i" <= "10" %} < 10 minutes {% else %} {{instance.read_time|time:"i"}} minutes{% endif %}</p> -->
+    <p>Read Time: {% if instance.read_time <= 1 %} < 1 Minute {% elif instance.read_time <= 10 %} < 10 Minutes {% else %} {{instance.read_time}} Minutes{% endif %}</p>
     <p>
         {% if instance.user.get_full_name %}
             Author: {{instance.user.get_full_name}}

@@ -17,6 +17,7 @@ from django.db.models import Q
 from django.contrib.contenttypes.models import ContentType
 from comments.models import Comment
 from comments.forms import CommentForm
+from .utils import get_read_time
 
 # Create your views here.
 
@@ -67,6 +68,8 @@ def post_detail(request, slug):
             raise Http404
     share_string = quote_plus(instance.content)
 
+    # print (get_read_time(instance.content))
+    print (get_read_time(instance.get_markdown()))
     initial_data = {
             "content_type": instance.get_content_type,
             "object_id":instance.id
